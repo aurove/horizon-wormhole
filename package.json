@@ -1,0 +1,23 @@
+{
+  "name": "@aurove/horizon-wormhole",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Wormhole NTT tooling for ERC-4626 vault shares from @aurove/horizon-contracts",
+  "scripts": {
+    "ntt:version": "ntt --version",
+    "ntt:status:avBTCv:testnet": "ntt status -p vaults/avBTCv/testnet/deployment.json",
+    "ntt:status:avBTCv:mainnet": "ntt status -p vaults/avBTCv/mainnet/deployment.json",
+    "ntt:status:avMEZOv:testnet": "ntt status -p vaults/avMEZOv/testnet/deployment.json",
+    "ntt:status:avMEZOv:mainnet": "ntt status -p vaults/avMEZOv/mainnet/deployment.json",
+    "ntt:pull:avBTCv:testnet": "ntt pull -p vaults/avBTCv/testnet/deployment.json",
+    "ntt:pull:avBTCv:mainnet": "ntt pull -p vaults/avBTCv/mainnet/deployment.json",
+    "ntt:pull:avMEZOv:testnet": "ntt pull -p vaults/avMEZOv/testnet/deployment.json",
+    "ntt:pull:avMEZOv:mainnet": "ntt pull -p vaults/avMEZOv/mainnet/deployment.json",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,1 +1,13 @@
 .DS_Store
+node_modules
+.env
+.env.*
+!.env.example
+overrides.json
+*.log
+dist
+out
+cache
+artifacts
+typechain
+typechain-types

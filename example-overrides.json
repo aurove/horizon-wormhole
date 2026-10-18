@@ -1,0 +1,13 @@
+{
+  "chains": {
+    "Mezo": {
+      "rpc": "https://rpc.test.mezo.org"
+    },
+    "BaseSepolia": {
+      "rpc": "https://sepolia.base.org"
+    },
+    "Base": {
+      "rpc": "https://mainnet.base.org"
+    }
+  }
+}
