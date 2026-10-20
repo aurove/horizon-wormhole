@@ -53,7 +53,7 @@ Each `deployment.json` is the output of the official NTT CLI (`ntt init`). Chain
    pnpm --filter @aurove/horizon-contracts exec hardhat deploy --tags VaultFactory,Vaults --network testnet
    ```
 
-5. Peer mintable ERC-20 on the spoke (NTT requires a token on every chain). Use Wormhole’s [example NTT token](https://github.com/wormhole-foundation/example-ntt-token-evm) (`PeerToken`) or an equivalent, then grant the spoke `NttManager` mint rights after `add-chain`.
+5. Deploy the Horizon spoke peer token on Base Sepolia or Base. From `horizon/`, run `pnpm --filter @aurove/horizon-contracts deploy:peer:testnet` (or `deploy:peer:mainnet`) with the matching Base network key and RPC set. The deployer owns the peers and will set each peer's NTT Manager as minter after `add-chain`.
 
 ## Initialize NTT configuration
 
@@ -82,7 +82,7 @@ export CONFIRM_MAINNET_NTT_DEPLOYMENT=YES
 pnpm ntt:deploy -- avBTCv mainnet <MEZO_VAULT_SHARE> <BASE_PEER_TOKEN>
 ```
 
-Use `avMEZOv` to deploy the second vault share pair. The deploy script does not grant token mint authority; after deployment, grant the spoke `NttManager` mint rights on the peer token and run `ntt status` again. Mainnet deployment requires an extra confirmation variable to reduce accidental production deployments.
+Use `avMEZOv` to deploy the second vault share pair. The deploy script does not grant token mint authority. After deployment, verify the spoke `NttManager` address in `deployment.json`, then call `setMinter(nttManager)` on the peer token. This is a one-time operation that permanently seals its minter and renounces token ownership. Mainnet deployment requires an extra confirmation variable to reduce accidental production deployments.
 
 For a command preview, set the deployed Mezo vault addresses in `helpers/vault-tokens.ts`, then run:
 
