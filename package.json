@@ -4,6 +4,9 @@
   "private": true,
   "description": "Wormhole NTT tooling for ERC-4626 vault shares from @aurove/horizon-contracts",
   "scripts": {
+    "ntt:install": "bash scripts/install-ntt-cli.sh",
+    "ntt:init": "bash scripts/init-configs.sh",
+    "ntt:deploy": "bash scripts/deploy-ntt.sh",
     "ntt:version": "ntt --version",
     "ntt:status:avBTCv:testnet": "ntt status -p vaults/avBTCv/testnet/deployment.json",
     "ntt:status:avBTCv:mainnet": "ntt status -p vaults/avBTCv/mainnet/deployment.json",

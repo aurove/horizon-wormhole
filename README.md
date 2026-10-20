@@ -27,21 +27,22 @@ wormhole/
 │   └── avMEZOv/{testnet,mainnet}/deployment.json
 ├── helpers/vault-tokens.ts                        # share ↔ contracts mapping
 ├── scripts/print-add-chain-commands.ts            # prints ntt add-chain cmds
+├── scripts/install-ntt-cli.sh                     # installs pinned NTT CLI
+├── scripts/init-configs.sh                        # creates missing NTT config files
+├── scripts/deploy-ntt.sh                          # deploys hub and spoke managers
 ├── example-overrides.json                         # copy → overrides.json for RPCs
 └── package.json                                   # @aurove/horizon-wormhole
 ```
 
-Each `deployment.json` was created with the official NTT CLI (`ntt init`). Chain entries are empty until `ntt add-chain` runs against deployed vault tokens.
+Each `deployment.json` is the output of the official NTT CLI (`ntt init`). Chain entries remain empty until deployment. The initializer only creates missing files, so it will not overwrite an existing deployment.
 
 ## Prerequisites
 
-1. **NTT CLI** (Bun-based):
+1. **Bun v1.2.23** and the pinned NTT CLI release:
 
    ```bash
-   curl -fsSL https://bun.sh/install | bash
-   export PATH="$HOME/.bun/bin:$PATH"
-   curl -fsSL https://raw.githubusercontent.com/wormhole-foundation/native-token-transfers/main/cli/install.sh | bash
-   ntt --version
+   # Install Bun v1.2.23 using Bun's official installation instructions.
+   pnpm ntt:install
    ```
 
 2. **Foundry** (already used by `horizon/contracts`).
@@ -54,43 +55,46 @@ Each `deployment.json` was created with the official NTT CLI (`ntt init`). Chain
 
 5. Peer mintable ERC-20 on the spoke (NTT requires a token on every chain). Use Wormhole’s [example NTT token](https://github.com/wormhole-foundation/example-ntt-token-evm) (`PeerToken`) or an equivalent, then grant the spoke `NttManager` mint rights after `add-chain`.
 
-## Configure vault token addresses
+## Initialize NTT configuration
 
-Edit `helpers/vault-tokens.ts` and set `mezoToken.testnet` / `mezoToken.mainnet` to the deployed `Vault` addresses from `horizon/contracts/deployments/{network}/avBTCVault.json` (and `avMEZOVault.json`).
-
-Print ready-to-run CLI commands:
+From `horizon/`, initialize any missing deployment configs with the official CLI:
 
 ```bash
-pnpm exec tsx scripts/print-add-chain-commands.ts
+pnpm ntt:init
 ```
 
-## Deploy NTT (after addresses are set)
+This runs `ntt init Testnet` and `ntt init Mainnet` in temporary directories, then copies each generated config only if the destination file does not already exist.
+
+## Deploy NTT
+
+Deploy the vault shares first and deploy a mintable peer ERC-20 on Base / Base Sepolia. The hub token is the Mezo `Vault` share address; the spoke token is the peer token address. The deployment script uses locking mode on Mezo and burning mode on Base, then checks the resulting deployment status.
 
 ```bash
 export ETH_PRIVATE_KEY=0x...
-# optional: cp example-overrides.json overrides.json  # custom RPCs
-
-# Example: avBTCv testnet hub (Mezo locking)
-ntt add-chain Mezo --latest --mode locking \
-  --token <MEZO_avBTCv_ADDRESS> \
-  -p vaults/avBTCv/testnet/deployment.json
-
-# Spoke (Base Sepolia burning) — requires spoke PeerToken address
-ntt add-chain BaseSepolia --latest --mode burning \
-  --token <BASE_SEPOLIA_PEER_TOKEN> \
-  -p vaults/avBTCv/testnet/deployment.json
-
-ntt status -p vaults/avBTCv/testnet/deployment.json
-ntt push  -p vaults/avBTCv/testnet/deployment.json   # if local rate-limit / peer edits need applying
+export CONFIRM_NTT_DEPLOYMENT=YES
+pnpm ntt:deploy -- avBTCv testnet <MEZO_VAULT_SHARE> <BASE_SEPOLIA_PEER_TOKEN>
 ```
 
-Repeat for `avMEZOv` and for mainnet (`Mezo` + `Base`).
+For mainnet, explicitly opt in as well:
+
+```bash
+export CONFIRM_MAINNET_NTT_DEPLOYMENT=YES
+pnpm ntt:deploy -- avBTCv mainnet <MEZO_VAULT_SHARE> <BASE_PEER_TOKEN>
+```
+
+Use `avMEZOv` to deploy the second vault share pair. The deploy script does not grant token mint authority; after deployment, grant the spoke `NttManager` mint rights on the peer token and run `ntt status` again. Mainnet deployment requires an extra confirmation variable to reduce accidental production deployments.
+
+For a command preview, set the deployed Mezo vault addresses in `helpers/vault-tokens.ts`, then run:
+
+```bash
+pnpm ntt:commands
+```
 
 Package scripts wrap status/pull:
 
 ```bash
-pnpm ntt:status:avBTCv:testnet
-pnpm ntt:pull:avBTCv:testnet
+pnpm --filter @aurove/horizon-wormhole ntt:status:avBTCv:testnet
+pnpm --filter @aurove/horizon-wormhole ntt:pull:avBTCv:testnet
 ```
 
 ## Relationship to contracts
