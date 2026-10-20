@@ -55,6 +55,38 @@ Each `deployment.json` is the output of the official NTT CLI (`ntt init`). Chain
 
 5. Deploy the Horizon spoke peer token on Base Sepolia or Base. From `horizon/`, run `pnpm --filter @aurove/horizon-contracts deploy:peer:testnet` (or `deploy:peer:mainnet`) with the matching Base network key and RPC set. The deployer owns the peers and will set each peer's NTT Manager as minter after `add-chain`.
 
+## End-to-end deployment
+
+From `horizon/`, the root script coordinates both contracts deployments, the NTT managers, bilateral peer and limit configuration, and the one-time spoke minter handoff. It uses `ETH_PRIVATE_KEY` for all three deployments so the same account owns the peer tokens during setup and signs NTT configuration transactions.
+
+Set an explicit positive daily NTT limit for each 18-decimal vault share. The script applies each value symmetrically as the inbound and outbound limit on both chains, then runs `ntt push` and `ntt status`.
+
+Testnet (Mezo + Base Sepolia):
+
+```bash
+export ETH_PRIVATE_KEY=0x...
+export HORIZON_AVBTCV_NTT_LIMIT=100
+export HORIZON_AVMEZOV_NTT_LIMIT=100
+export CONFIRM_HORIZON_DEPLOYMENT=YES
+pnpm deploy:cross-chain:testnet
+```
+
+Mainnet (Mezo + Base) requires `MAINNET_RPC_URL` and an additional confirmation:
+
+```bash
+export ETH_PRIVATE_KEY=0x...
+export MAINNET_RPC_URL=https://...
+export HORIZON_AVBTCV_NTT_LIMIT=10
+export HORIZON_AVMEZOV_NTT_LIMIT=10
+export CONFIRM_HORIZON_DEPLOYMENT=YES
+export CONFIRM_HORIZON_MAINNET_DEPLOYMENT=YES
+pnpm deploy:cross-chain:mainnet
+```
+
+The script verifies the pinned NTT CLI version, deploys or reuses the contract deployments, and adds only NTT chains missing from each config. It stops if an existing NTT chain has a different token or mode. The peer minter handoff is irreversible: verify the manager address printed in `deployment.json` before the script reaches that step. If a run stops partway through, fix the reported cause and rerun; completed contract/NTT deployments are reused where safe.
+
+The mainnet path broadcasts contracts and configuration transactions. Run the testnet path and inspect the resulting configurations before opting into mainnet.
+
 ## Initialize NTT configuration
 
 From `horizon/`, initialize any missing deployment configs with the official CLI:
