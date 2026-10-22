@@ -26,10 +26,18 @@ case "$network" in
   testnet)
     hub_chain="Mezo"
     spoke_chain="BaseSepolia"
+    export MEZO_VERIFIER="blockscout"
+    export MEZO_VERIFIER_URL="https://api.explorer.test.mezo.org/api"
+    export BASESEPOLIA_VERIFIER="etherscan"
+    export BASESEPOLIA_SCAN_API_KEY="${BASESCAN_API_KEY:-${ETHERSCAN_API_KEY:-}}"
     ;;
   mainnet)
     hub_chain="Mezo"
     spoke_chain="Base"
+    export MEZO_VERIFIER="blockscout"
+    export MEZO_VERIFIER_URL="https://api.explorer.mezo.org/api"
+    export BASE_VERIFIER="etherscan"
+    export BASE_SCAN_API_KEY="${BASESCAN_API_KEY:-${ETHERSCAN_API_KEY:-}}"
     if [[ "${CONFIRM_MAINNET_NTT_DEPLOYMENT:-}" != "YES" ]]; then
       echo "Set CONFIRM_MAINNET_NTT_DEPLOYMENT=YES to deploy NTT contracts to mainnet." >&2
       exit 2
@@ -44,6 +52,11 @@ for token in "$hub_token" "$spoke_token"; do
     exit 2
   fi
 done
+
+if [[ "${HORIZON_SKIP_NTT_VERIFY:-}" != "YES" && -z "${BASESCAN_API_KEY:-${ETHERSCAN_API_KEY:-}}" ]]; then
+  echo "Set BASESCAN_API_KEY or ETHERSCAN_API_KEY to verify NTT contracts on BaseScan." >&2
+  exit 2
+fi
 
 if [[ -z "${ETH_PRIVATE_KEY:-}" ]]; then
   echo "Set ETH_PRIVATE_KEY in the environment; do not put it in a committed file." >&2
@@ -75,8 +88,14 @@ echo "Hub token: $hub_token"
 echo "Spoke peer token: $spoke_token"
 echo "Deployment file: $deployment"
 
-ntt add-chain "$hub_chain" --latest --mode locking --token "$hub_token" -p "$deployment"
-ntt add-chain "$spoke_chain" --latest --mode burning --token "$spoke_token" -p "$deployment"
+hub_args=(add-chain "$hub_chain" --latest --mode locking --token "$hub_token" -p "$deployment")
+spoke_args=(add-chain "$spoke_chain" --latest --mode burning --token "$spoke_token" -p "$deployment")
+if [[ "${HORIZON_SKIP_NTT_VERIFY:-}" == "YES" ]]; then
+  hub_args+=(--skip-verify)
+  spoke_args+=(--skip-verify)
+fi
+ntt "${hub_args[@]}"
+ntt "${spoke_args[@]}"
 ntt status -p "$deployment"
 
 echo "Next: grant the spoke NttManager mint authority on $spoke_token, then run ntt status again."
