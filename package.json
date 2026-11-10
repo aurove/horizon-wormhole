@@ -2,6 +2,7 @@
   "name": "@aurove/horizon-wormhole",
   "version": "0.0.0",
   "private": true,
+  "license": "MIT",
   "description": "Wormhole NTT tooling for ERC-4626 vault shares from @aurove/horizon-contracts",
   "scripts": {
     "ntt:install": "bash scripts/install-ntt-cli.sh",
