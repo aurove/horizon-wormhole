@@ -6,12 +6,12 @@
       "mode": "locking",
       "paused": false,
       "owner": "0x6E1126EA838DA392A55D8DdeD9bADEccA5835114",
-      "manager": "0x7F47719ca9B033843e575fA49F847220337De151",
-      "token": "0xb4122E019693A7A7c470519093599D0c45f7CF12",
+      "manager": "0x01B2C64505f367203429753029EA8BEB66987a09",
+      "token": "0x8e95C83A5144dcdD6ce79D7fBd58057b689f086f",
       "transceivers": {
         "threshold": 1,
         "wormhole": {
-          "address": "0xE17A087AbCf0a45072d110078E1937911d4829E7",
+          "address": "0xA21328Abc178E1b47eC9A14f40e7100372678d10",
           "pauser": "0x6E1126EA838DA392A55D8DdeD9bADEccA5835114"
         }
       },
@@ -21,19 +21,20 @@
           "BaseSepolia": "1.000000000000000000"
         }
       },
-      "pauser": "0x6E1126EA838DA392A55D8DdeD9bADEccA5835114"
+      "pauser": "0x6E1126EA838DA392A55D8DdeD9bADEccA5835114",
+      "managerVariant": "standard"
     },
     "BaseSepolia": {
       "version": "2.0.0",
       "mode": "burning",
       "paused": false,
       "owner": "0x6E1126EA838DA392A55D8DdeD9bADEccA5835114",
-      "manager": "0x862f45A57f83393AC5a01c5860DF2A5e051501C4",
-      "token": "0xb25912d67A8fb9C7Acb8b2eB4c1600aF7872D132",
+      "manager": "0x96e12AD5F0402a458823A8E2A6Ea0E986DCD358e",
+      "token": "0x0d36e2B7350950662859A82A91E13Ad7d0E594E0",
       "transceivers": {
         "threshold": 1,
         "wormhole": {
-          "address": "0xf22EaAecdA0E2144154a964C2294549a3Ba999C4",
+          "address": "0x82C8d99f67eB28b023387236051cB292c9A477AA",
           "pauser": "0x6E1126EA838DA392A55D8DdeD9bADEccA5835114"
         }
       },
@@ -43,7 +44,8 @@
           "Mezo": "1.000000000000000000"
         }
       },
-      "pauser": "0x6E1126EA838DA392A55D8DdeD9bADEccA5835114"
+      "pauser": "0x6E1126EA838DA392A55D8DdeD9bADEccA5835114",
+      "managerVariant": "standard"
     }
   }
 }
