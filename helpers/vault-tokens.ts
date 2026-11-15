@@ -5,7 +5,7 @@
  * (`VaultFactory` → avBTCv / avMEZOv). Mezo is the locking hub; Base (or Base Sepolia) is the
  * burning spoke where NTT deploys a peer mintable representation.
  *
- * Fill addresses after `hardhat deploy --tags Vaults` in horizon/contracts. Leave null until then.
+ * Fill addresses after `pnpm hh deploy --tags Vaults` in horizon/contracts. Leave null until then.
  */
 
 export type VaultShareSymbol = "avBTCv" | "avMEZOv";
@@ -87,7 +87,7 @@ export function requireMezoVaultToken(
   if (!address) {
     throw new Error(
       `Missing Mezo token for ${symbol} on ${network}. Deploy the vault via ` +
-        `@aurove/horizon-contracts (hardhat deploy --tags Vaults), then set ` +
+        `@aurove/horizon-contracts (pnpm hh deploy --tags Vaults), then set ` +
         `helpers/vault-tokens.ts mezoToken.${network}.`,
     );
   }

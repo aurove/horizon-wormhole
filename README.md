@@ -80,7 +80,7 @@ pnpm ntt:version   # expect package version 1.7.0 from the pinned CLI
 Vault shares and Base peers must exist before NTT deploy (from `@aurove/horizon-contracts`):
 
 ```bash
-pnpm --filter @aurove/horizon-contracts exec hardhat deploy --tags VaultFactory,Vaults --network testnet
+pnpm --filter @aurove/horizon-contracts hh deploy --tags VaultFactory,Vaults --network testnet
 pnpm --filter @aurove/horizon-contracts deploy:peer:testnet
 ```
 
@@ -193,7 +193,7 @@ pnpm ntt:deploy -- avMEZOv testnet <MEZO_VAULT_SHARE> <BASE_SEPOLIA_PEER>
 3. Seal each Base peer to its spoke NTT manager (contracts package):
 
 ```bash
-pnpm --filter @aurove/horizon-contracts exec hardhat vault-peer:set-minter \
+pnpm --filter @aurove/horizon-contracts hh vault-peer:set-minter \
   --network baseSepolia \
   --peer <PEER_ADDRESS> \
   --manager <NTT_MANAGER_ADDRESS>
@@ -211,9 +211,11 @@ Complete hub+spoke refresh (contracts + NTT + minter seal):
 
 ```bash
 # From horizon/
-CONFIRM_CONTRACTS_REDEPLOYMENT=YES CONFIRM_NTT_REDEPLOYMENT=YES \
+CONFIRM_HORIZON_DEPLOYMENT=YES CONFIRM_HORIZON_REDEPLOYMENT=YES \
   pnpm redeploy:cross-chain:testnet
 ```
+
+The root script sets `CONFIRM_CONTRACTS_REDEPLOYMENT` / `CONFIRM_NTT_REDEPLOYMENT` for the package redeploy steps once those Horizon confirmations are present.
 
 ### Mainnet
 
