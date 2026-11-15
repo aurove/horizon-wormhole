@@ -14,7 +14,7 @@ Hub-and-spoke (same pattern as Mezo’s MUSD NTT bridge):
 | Mainnet | `Mezo` | `Base` | Mezo `Vault` share |
 
 - **Mezo (locking):** escrow canonical vault shares; supply stays conserved.
-- **Base / Base Sepolia (burning):** mint/burn a peer ERC-20 representation for Aerodrome and other Base DeFi.
+- **Base / Base Sepolia (burning):** mint/burn a peer ERC-20 representation for Aero and other Base DeFi.
 
 Underlying Id20 (`avBTCm` / `avMEZOm`), gauges, and Mezo Earn rewards stay on Mezo. Bridging moves vault shares only.
 
