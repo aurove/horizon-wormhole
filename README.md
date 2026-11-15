@@ -249,7 +249,9 @@ Needs `forge`, `cast`, the pinned NTT CLI checkout under `~/.ntt-cli/.checkout`,
 | Explorer | Networks | Notes |
 |----------|----------|-------|
 | Mezo Blockscout | testnet `31611`, mainnet `31612` | Public API; no key |
-| Basescan | Base Sepolia `84532`, Base `8453` | Requires API key |
+| Basescan | Base Sepolia `84532`, Base `8453` | Requires API key; verify uses Etherscan API V2 (`api.etherscan.io/v2/api?chainid=…`) |
+
+Wave 2 testnet managers, transceivers, and implementations are verified on explorers (see tables below). Re-run `pnpm run verify:testnet` after redeploys.
 
 ---
 
@@ -263,10 +265,10 @@ Wave 2 (2026-11-10). Canonical JSON: `vaults/*/testnet/deployment.json`. Owner /
 |-------|------|---------|--------------|
 | Mezo | Token (vault) | [`0x8e95C83A5144dcdD6ce79D7fBd58057b689f086f`](https://explorer.test.mezo.org/address/0x8e95C83A5144dcdD6ce79D7fBd58057b689f086f) | [Sourcify](https://repo.sourcify.dev/31611/0x8e95C83A5144dcdD6ce79D7fBd58057b689f086f) |
 | Mezo | NTT manager (locking) | [`0x01B2C64505f367203429753029EA8BEB66987a09`](https://explorer.test.mezo.org/address/0x01B2C64505f367203429753029EA8BEB66987a09#code) | Blockscout verified |
-| Mezo | Wormhole transceiver | [`0xA21328Abc178E1b47eC9A14f40e7100372678d10`](https://explorer.test.mezo.org/address/0xA21328Abc178E1b47eC9A14f40e7100372678d10) | Verify via `pnpm verify:testnet` |
+| Mezo | Wormhole transceiver | [`0xA21328Abc178E1b47eC9A14f40e7100372678d10`](https://explorer.test.mezo.org/address/0xA21328Abc178E1b47eC9A14f40e7100372678d10#code) | Blockscout verified |
 | Base Sepolia | Token (peer) | [`0x0d36e2B7350950662859A82A91E13Ad7d0E594E0`](https://sepolia.basescan.org/address/0x0d36e2B7350950662859A82A91E13Ad7d0E594E0#code) | Basescan verified |
-| Base Sepolia | NTT manager (burning) | [`0x96e12AD5F0402a458823A8E2A6Ea0E986DCD358e`](https://sepolia.basescan.org/address/0x96e12AD5F0402a458823A8E2A6Ea0E986DCD358e) | Verify via `pnpm verify:testnet` |
-| Base Sepolia | Wormhole transceiver | [`0x82C8d99f67eB28b023387236051cB292c9A477AA`](https://sepolia.basescan.org/address/0x82C8d99f67eB28b023387236051cB292c9A477AA) | Verify via `pnpm verify:testnet` |
+| Base Sepolia | NTT manager (burning) | [`0x96e12AD5F0402a458823A8E2A6Ea0E986DCD358e`](https://sepolia.basescan.org/address/0x96e12AD5F0402a458823A8E2A6Ea0E986DCD358e#code) | Basescan verified |
+| Base Sepolia | Wormhole transceiver | [`0x82C8d99f67eB28b023387236051cB292c9A477AA`](https://sepolia.basescan.org/address/0x82C8d99f67eB28b023387236051cB292c9A477AA#code) | Basescan verified |
 
 Configured limits (from `deployment.json`): outbound / inbound `1` (1e18 atomic units displayed as `1.000000000000000000`).
 
@@ -276,10 +278,10 @@ Configured limits (from `deployment.json`): outbound / inbound `1` (1e18 atomic 
 |-------|------|---------|--------------|
 | Mezo | Token (vault) | [`0x2C45a18a23d5bfFf3Fc0c4Bff6376dA1d943373c`](https://explorer.test.mezo.org/address/0x2C45a18a23d5bfFf3Fc0c4Bff6376dA1d943373c) | [Sourcify](https://repo.sourcify.dev/31611/0x2C45a18a23d5bfFf3Fc0c4Bff6376dA1d943373c) |
 | Mezo | NTT manager (locking) | [`0x2a0B2726f7822cEBdE9D665D049a42f13Fa6A517`](https://explorer.test.mezo.org/address/0x2a0B2726f7822cEBdE9D665D049a42f13Fa6A517#code) | Blockscout verified |
-| Mezo | Wormhole transceiver | [`0x6201F4c88aAfDd627108467dafA81464E3eb885a`](https://explorer.test.mezo.org/address/0x6201F4c88aAfDd627108467dafA81464E3eb885a) | Verify via `pnpm verify:testnet` |
+| Mezo | Wormhole transceiver | [`0x6201F4c88aAfDd627108467dafA81464E3eb885a`](https://explorer.test.mezo.org/address/0x6201F4c88aAfDd627108467dafA81464E3eb885a#code) | Blockscout verified |
 | Base Sepolia | Token (peer) | [`0x172096f3F0F98B9dc1302695A48044D6A3D799C9`](https://sepolia.basescan.org/address/0x172096f3F0F98B9dc1302695A48044D6A3D799C9#code) | Basescan verified |
-| Base Sepolia | NTT manager (burning) | [`0x79D11c9d7F5d5ef676c4c87Cf9deEC5D972bd8A1`](https://sepolia.basescan.org/address/0x79D11c9d7F5d5ef676c4c87Cf9deEC5D972bd8A1) | Verify via `pnpm verify:testnet` |
-| Base Sepolia | Wormhole transceiver | [`0x9383b1ACAf2bD2B0F6b205Be9fFbCcBfC78A8300`](https://sepolia.basescan.org/address/0x9383b1ACAf2bD2B0F6b205Be9fFbCcBfC78A8300) | Verify via `pnpm verify:testnet` |
+| Base Sepolia | NTT manager (burning) | [`0x79D11c9d7F5d5ef676c4c87Cf9deEC5D972bd8A1`](https://sepolia.basescan.org/address/0x79D11c9d7F5d5ef676c4c87Cf9deEC5D972bd8A1#code) | Basescan verified |
+| Base Sepolia | Wormhole transceiver | [`0x9383b1ACAf2bD2B0F6b205Be9fFbCcBfC78A8300`](https://sepolia.basescan.org/address/0x9383b1ACAf2bD2B0F6b205Be9fFbCcBfC78A8300#code) | Basescan verified |
 
 Configured limits: outbound / inbound `20000000` (20M).
 

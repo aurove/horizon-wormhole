@@ -34,11 +34,30 @@ function loadEnv() {
 }
 
 function verify(address, contract, chainId, rpcUrl, explorer, env) {
-  const common = ["verify-contract", address, contract, "--chain", String(chainId), "--rpc-url", rpcUrl, "--via-ir", "--guess-constructor-args", "--watch"];
+  const common = [
+    "verify-contract",
+    address,
+    contract,
+    "--chain",
+    String(chainId),
+    "--rpc-url",
+    rpcUrl,
+    "--via-ir",
+    "--guess-constructor-args",
+    "--watch",
+  ];
   if (explorer.kind === "blockscout") {
     common.push("--verifier", "blockscout", "--verifier-url", explorer.url);
   } else {
-    common.push("--verifier", "etherscan", "--etherscan-api-key", explorer.apiKey);
+    // Etherscan API V2 (Basescan / Etherscan share this endpoint + chainid).
+    common.push(
+      "--verifier",
+      "etherscan",
+      "--verifier-url",
+      `https://api.etherscan.io/v2/api?chainid=${chainId}`,
+      "--etherscan-api-key",
+      explorer.apiKey,
+    );
   }
   run("forge", common, env);
 }
