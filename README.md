@@ -101,8 +101,8 @@ cp .env.example .env
 | `HORIZON_AVBTCV_NTT_LIMIT` | Cross-chain deploy | Positive daily limit (18-decimal units) |
 | `HORIZON_AVMEZOV_NTT_LIMIT` | Cross-chain deploy | Positive daily limit (18-decimal units) |
 | `CONFIRM_HORIZON_DEPLOYMENT` | Cross-chain deploy | Must be `YES` |
-| `BASESCAN_API_KEY` | Base verification | Or `ETHERSCAN_API_KEY` |
-| `HORIZON_SKIP_NTT_VERIFY` | Optional | `YES` skips explorer verify during NTT deploy |
+| `BASESCAN_API_KEY` | Cross-chain deploy + Base verify | Or `ETHERSCAN_API_KEY`. Required unless `HORIZON_SKIP_NTT_VERIFY=YES` |
+| `HORIZON_SKIP_NTT_VERIFY` | Optional | `YES` skips explorer verify during NTT deploy (then no Basescan key needed for deploy) |
 | `HORIZON_SKIP_CONTRACT_DEPLOYMENT` | Optional | `YES` resumes NTT-only after contracts exist |
 | `MEZO_MAINNET_RPC_URL` | Mainnet | Required for mainnet deploy/verify |
 | `CONFIRM_HORIZON_MAINNET_DEPLOYMENT` | Mainnet | Extra mainnet opt-in |
@@ -160,11 +160,11 @@ export ETH_PRIVATE_KEY=0x...
 export HORIZON_AVBTCV_NTT_LIMIT=100
 export HORIZON_AVMEZOV_NTT_LIMIT=100
 export CONFIRM_HORIZON_DEPLOYMENT=YES
-# optional: BASESCAN_API_KEY=...
+export BASESCAN_API_KEY=...   # or ETHERSCAN_API_KEY; required unless HORIZON_SKIP_NTT_VERIFY=YES
 pnpm deploy:cross-chain:testnet
 ```
 
-Limits are applied symmetrically as inbound and outbound on both chains, then `ntt push` and `ntt status` run. Foundry’s runtime hardfork is set to Cancun for Mezo vault bytecode (`FOUNDRY_HARDFORK` override available).
+Limits are applied symmetrically as inbound and outbound on both chains, then `ntt push` and `ntt status` run. Foundry’s runtime hardfork is set to Cancun for Mezo vault bytecode (`FOUNDRY_HARDFORK` override available). The root deploy script errors without a Basescan/Etherscan key when verification is enabled (default).
 
 Resume NTT-only after contracts are already recorded:
 
